@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "LyseisApi"
+		},
+		{
+			"path": "Shared"
+		},
+		{
+			"path": "ApiTestProject"
+		}
+	],
+	"settings": {}
+}

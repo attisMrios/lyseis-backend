@@ -1,0 +1,13 @@
+@page "/Layout"
+@using Lyseis.Classes
+@inherits LayoutComponentBase
+<div class="login-layout">
+    <MudThemeProvider Theme="Globals.Dark"/>
+    <MudLayout>
+        <MudMainContent Class="pt-16 px-16" Style="margin-top: 5px">
+            <MudContainer MaxWidth="MaxWidth.ExtraLarge">
+                @Body
+            </MudContainer>
+        </MudMainContent>
+    </MudLayout>
+</div>

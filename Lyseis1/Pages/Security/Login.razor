@@ -1,0 +1,31 @@
+@page "/Login"
+@layout LoginLayout
+<div class="center-login" style="height: @(Height)px;">
+    @* <MudPaper Class="pa-16 ma-2" Elevation="3"></MudPaper> *@
+    <div style="width: 100%;">
+        <MudGrid Spacing="1">
+            <MudItem xs="8">
+                <MudCard>
+                    <MudCardMedia Image="assets/images/logo.png" Height="234" />
+                </MudCard>
+            </MudItem>
+            <MudItem xs="4">
+                <MudCard Style="height: 234px">
+                    <MudCardContent>
+                        <MudForm @ref="_form" @bind-IsValid="@_success" @bind-Errors="@errors">
+                            <MudTextField T="string" Label="Username" Required="true" RequiredError="User name is required!"/>
+                            <MudTextField T="string" Label="Password" @ref="_passwordField"
+                                          InputType="InputType.Password"
+                                          Validation="@(new Func<string, IEnumerable<string>>(PasswordStrength))" 
+                                          Required="true"
+                                          RequiredError="Password is required!"/>
+                        </MudForm>
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!_success)" Class="ml-auto" Style="width: 100%" OnClick="LoginApp">Login</MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+        </MudGrid>
+    </div>
+</div>
