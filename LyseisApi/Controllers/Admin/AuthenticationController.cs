@@ -38,13 +38,10 @@ namespace LyseisApi.Controllers.Admin
         /// <returns></returns>
         [AllowAnonymous]
         [HttpGet("token")]
-        [Consumes("application/x-www-form-urlencoded")]
-        public IActionResult GetToken([FromForm] IFormCollection loginData)
+        public IActionResult GetToken(string userName, string password)
         {
             try
             {
-                string userName = loginData["username"];
-                string password = loginData["password"];
 
                 using AdminUnitOfWork adminUnitOfWork = new AdminUnitOfWork();
                 using (UsersBusiness usersBusiness = new UsersBusiness(userName, adminUnitOfWork))
@@ -53,13 +50,13 @@ namespace LyseisApi.Controllers.Admin
 
                     if (user == null)
                     {
-                        return StatusCode(401, "Unauthorized - The user does not exist");
+                        return StatusCode(401, "No existe el usuario");
                     }
                     else
                     {
                         if (user.Password != Shared.Classess.Security.Encrypt(password))
                         {
-                            return StatusCode(401, "Unauthorized - Password incorrect");
+                            return StatusCode(401, "Contraseña incorrecta");
                         }
                         else
                         {
