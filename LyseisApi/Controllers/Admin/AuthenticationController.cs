@@ -86,10 +86,13 @@ namespace LyseisApi.Controllers.Admin
                             // get token to response
                             string token = _jwtSecurityTokenHandler.WriteToken(jwt);
 
-                            return Ok(new
+                            return Ok(new ResponseModel<Object>
                             {
-                                token = token,
-                                expirationDate = new DateTimeOffset(jwtDate.AddDays(1)).ToLocalTime(),
+                                Data = new {
+                                    token = token,
+                                    expirationDate = new DateTimeOffset(jwtDate.AddDays(1)).ToLocalTime(),
+                                },
+                                Status = 200
                             });
                         }
                     }
