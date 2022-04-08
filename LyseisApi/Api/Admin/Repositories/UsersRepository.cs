@@ -5,8 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LyseisApi.Api.Admin.Repositories
 {
+    ///
     public class UsersRepository: Repository<UsersEntity>
     {
+        ///
         public UsersRepository(DbContext context) : base(context, nameof(UsersRepository))
         {
         }

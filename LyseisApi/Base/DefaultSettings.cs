@@ -3,10 +3,12 @@ using Microsoft.Extensions.Configuration;
 
 namespace LyseisApi.Base
 {
+    ///
     public class DefaultSettings
     {
         private static IConfigurationRoot Settings { get; set; }
-        
+
+        /// 
         public static string GetConnectionString(string connectionString){
             if( Settings == null)
             {
@@ -24,7 +26,7 @@ namespace LyseisApi.Base
 
             Settings = builder.Build();
         }
-        
+        ///
         public static string GetValue(string section)
         {
             if( Settings == null)

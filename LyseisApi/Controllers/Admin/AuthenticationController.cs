@@ -34,7 +34,8 @@ namespace LyseisApi.Controllers.Admin
         /// <summary>
         /// Generate a symmetric token
         /// </summary>
-        /// <param name="loginData"></param>
+        /// <param name="userName"></param>
+        /// <param name="password"></param>
         /// <returns></returns>
         [AllowAnonymous]
         [HttpGet("token")]

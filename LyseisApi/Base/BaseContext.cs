@@ -5,6 +5,7 @@ using static System.Enum;
 
 namespace LyseisApi.Base
 {
+    ///
     public class BaseContext : DbContext
     {
         // Database connection string
@@ -14,8 +15,10 @@ namespace LyseisApi.Base
         // defines the type of engine to use
         private DatabaseEngine DbEngineType { get; set; } = DatabaseEngine.PostgreSql;
 
+        ///
         public string Schema => GetValueConnectionString("Search Path", ConnectionString);
 
+        ///
         public BaseContext() : base(GetOptions())
         {
             BeginConfiguring();
@@ -72,18 +75,12 @@ namespace LyseisApi.Base
             }
         }
 
+        ///
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            if (_testing) return;
-            // if (DbEngineType == DatabaseEngine.PostgreSql)
-            // {
-            //     foreach (var entity in modelBuilder.Model.GetEntityTypes())
-            //     {
-            //         entity.SetTableName(entity.GetTableName()?.ToLower());
-            //     }
-            // }
+            if (_testing) return;            
         }
 
         private void BeginConfiguring()
@@ -130,7 +127,7 @@ namespace LyseisApi.Base
 
             return value;
         }
-
+        ///
         public string GetConnectionString()
         {
             //return Database.GetDbConnection().ConnectionString;

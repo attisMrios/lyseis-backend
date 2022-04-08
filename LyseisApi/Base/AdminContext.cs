@@ -4,8 +4,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LyseisApi.Base
 {
+    ///
     public class AdminContext : BaseContext
     {
+        ///
         public AdminContext() : base()
         { }
 
@@ -18,8 +20,11 @@ namespace LyseisApi.Base
 
         #region DBSetProperties
 
+        ///
         public DbSet<CompaniesEntity> Companies { get; set; }
+        ///
         public DbSet<UsersEntity> Users { get; set; }
+        ///
         public DbSet<CryptoEntity> Crypto { get; set; }
 
         #endregion
