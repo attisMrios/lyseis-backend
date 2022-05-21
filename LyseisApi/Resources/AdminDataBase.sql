@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS users(
     usr_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     usr_user_name varchar(50) UNIQUE NOT NULL,
     usr_password varchar(400) NOT NULL,
-    usr_created_at DATE NOT NULL,
+    usr_created_at TIMESTAMP NOT NULL,
     usr_last_login TIMESTAMP 
 );
 
@@ -20,6 +20,6 @@ CREATE TABLE IF NOT EXISTS companies(
     cmp_web_site varchar(200),
     cmp_logo_url varchar(200),
     cmp_city_name varchar(50),
-    created_at DATE NOT NULL
+    created_at TIMESTAMP NOT NULL
     );
 

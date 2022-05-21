@@ -3,7 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using LyseisApi.Api.Admin.Business;
-using LyseisApi.Api.Admin.Entities.AdminEntities;
+using LyseisApi.Api.Admin.Entities.Admin;
 using LyseisApi.Base;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

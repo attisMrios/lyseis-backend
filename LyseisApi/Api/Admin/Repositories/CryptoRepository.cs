@@ -1,4 +1,4 @@
-using LyseisApi.Api.Admin.Entities.AdminEntities;
+using LyseisApi.Api.Admin.Entities.Admin;
 using LyseisApi.Base;
 using Microsoft.EntityFrameworkCore;
 

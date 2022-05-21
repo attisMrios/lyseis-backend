@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace LyseisApi.Api.Admin.Entities.AdminEntities
+namespace LyseisApi.Api.Admin.Entities.Admin
 {
     /// <summary>
     /// Users table structure

@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace LyseisApi.Api.Admin.Entities.AdminEntities
+namespace LyseisApi.Api.Admin.Entities.Admin
 {
     ///
     [Table("crypto")]

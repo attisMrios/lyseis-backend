@@ -1,6 +1,6 @@
 using System;
 using LyseisApi.Api.Admin.Business;
-using LyseisApi.Api.Admin.Entities.AdminEntities;
+using LyseisApi.Api.Admin.Entities.Admin;
 using LyseisApi.Api.Admin.Models;
 using LyseisApi.Base;
 using Microsoft.AspNetCore.Authorization;

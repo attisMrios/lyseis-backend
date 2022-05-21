@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
-using LyseisApi.Api.Admin.Entities.AdminEntities;
+using LyseisApi.Api.Admin.Entities.Admin;
 using LyseisApi.Base;
 using Microsoft.EntityFrameworkCore;
 
@@ -88,52 +88,13 @@ namespace LyseisApi.Api.Admin.Business
 
                 // save company info
                 AddCompany(companyInfo);
-                
-                // save crypt and decrypt keys
-                // using (var crypto = new CryptoBusiness(UserId, AdminUnitOfWork))
-                // {
-                //     var rsa = new RSACryptoServiceProvider();
-                //     
-                //     // keys to encrypt
-                //     var cryptoParametersFalse = rsa.ExportParameters(false);
-                //     var cryptoInfo = new CryptoEntity()
-                //     {
-                //         Parameters = false,
-                //         D = cryptoParametersFalse.D,
-                //         P = cryptoParametersFalse.P,
-                //         Q = cryptoParametersFalse.Q,
-                //         DP = cryptoParametersFalse.DP,
-                //         DQ = cryptoParametersFalse.DQ,
-                //         InverseQ = cryptoParametersFalse.InverseQ,
-                //         Exponent = cryptoParametersFalse.Exponent,
-                //         Modulus = cryptoParametersFalse.Modulus
-                //     };
-                //     crypto.AddCryptoInfo(cryptoInfo);
-                //     
-                //     // keys to decrypt
-                //     cryptoParametersFalse = rsa.ExportParameters(true);
-                //     cryptoInfo = new CryptoEntity()
-                //     {
-                //         Parameters = true,
-                //         D = cryptoParametersFalse.D,
-                //         P = cryptoParametersFalse.P,
-                //         Q = cryptoParametersFalse.Q,
-                //         DP = cryptoParametersFalse.DP,
-                //         DQ = cryptoParametersFalse.DQ,
-                //         InverseQ = cryptoParametersFalse.InverseQ,
-                //         Exponent = cryptoParametersFalse.Exponent,
-                //         Modulus = cryptoParametersFalse.Modulus
-                //     };
-                //     
-                //     crypto.AddCryptoInfo(cryptoInfo);
-                // }
 
                 // prepare user info
                 var users = new UsersEntity()
                 {
                     Password = "123456Aa",
                     CreatedAt = DateTime.Now,
-                    LastLogin = null,
+                    LastLogin = DateTime.Now,
                     UserName = "Admin"
                 };
 

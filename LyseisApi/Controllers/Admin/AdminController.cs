@@ -6,6 +6,7 @@ using LyseisApi.Base;
 using Microsoft.Extensions.Logging;
 using Shared.Classess;
 using Shared.Enums;
+using System.Transactions;
 
 
 namespace LyseisApi.Controllers.Admin
@@ -27,7 +28,7 @@ namespace LyseisApi.Controllers.Admin
         public Result<List<string>> CreateSchemas()
         {
             Result<List<string>> result = new Result<List<string>>();
-            
+
             try
             {
                 string userId = Request.Headers[Shared.Constants.DefaultHeaders.UserId];
@@ -59,16 +60,22 @@ namespace LyseisApi.Controllers.Admin
         public Result<bool> GetStarted()
         {
             Result<bool> result = new Result<bool>();
-            
+
             try
             {
                 string userId = Request.Headers["user_id"];
                 using (AdminUnitOfWork adminUnitOfWork = new AdminUnitOfWork())
                 {
-                    using (CompaniesBusiness companiesBusiness = new CompaniesBusiness(userId, adminUnitOfWork))
+                    using (var transaction = new TransactionScope(TransactionScopeOption.Required))
                     {
-                        CreateSchemas();
-                        companiesBusiness.CreateStartUpInfo();
+                        using (CompaniesBusiness companiesBusiness = new CompaniesBusiness(userId, adminUnitOfWork))
+                        {
+                            CreateSchemas();
+                            companiesBusiness.CreateStartUpInfo();
+                            transaction.Complete();
+                            result.Data = true;
+                            result.ResultStatus = Status.Success;
+                        }
                     }
                 }
             }

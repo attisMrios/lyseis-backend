@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using System.Security.Cryptography;
-using LyseisApi.Api.Admin.Entities.AdminEntities;
+using LyseisApi.Api.Admin.Entities.Admin;
 using LyseisApi.Base;
 using Shared.Classess;
 
