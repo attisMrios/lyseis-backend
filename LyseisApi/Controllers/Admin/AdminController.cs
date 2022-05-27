@@ -35,8 +35,9 @@ namespace LyseisApi.Controllers.Admin
                 using AdminUnitOfWork adminUnitOfWork = new AdminUnitOfWork();
                 using CompaniesBusiness companies = new CompaniesBusiness(userId, adminUnitOfWork);
                 var errorList = companies.CreateAdminSchema();
+                var companyErrorList = companies.CreateCompanySchema();
                 result.ResultStatus = Status.Success;
-                result.Data = errorList;
+                result.Data = errorList.AddRange(companyErrorList);
             }
             catch (Exception e)
             {

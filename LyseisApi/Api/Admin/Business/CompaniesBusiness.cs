@@ -63,6 +63,40 @@ namespace LyseisApi.Api.Admin.Business
             return errorsList;
         }
 
+        public List<string>CreateCompanySchema() {
+            List<string> errorsList = new List<string>();
+            try
+            {
+                // read sql script file
+                string[] scripts = System.IO.File.ReadAllText(System.IO.Path.Combine(
+                    Shared.Constants.SystemPaths.Resources,
+                    "LyseisDataBase.sql")).Split(';');
+
+                foreach (var script in scripts)
+                {
+                    try
+                    {
+                        AdminUnitOfWork.CompaniesRepository.ExecuteSqlRaw(script);
+                    }
+                    catch (DbUpdateException sqlException)
+                    {
+                        errorsList.Add(sqlException.Message);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                        errorsList.Add(e.Message);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+
+            return errorsList;
+        }
         /// <summary>
         /// Create basic info for start up the company
         /// </summary>
