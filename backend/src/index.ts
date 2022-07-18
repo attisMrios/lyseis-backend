@@ -1,10 +1,12 @@
 // https://www.youtube.com/watch?v=ZpY5KdGQvwI
 import express from 'express';
 import * as dotenv from 'dotenv';
-console.log('hola');
+import authRoute from './controllers/admin/authentication.controller'
+
 dotenv.config();
 const app = express();
 app.use(express.json()) // middleware que transforma el cuerpo de una petición en un jsson
+app.use('/api', authRoute);
 
 
 app.get('/ping', (_req, res) => {
