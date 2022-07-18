@@ -2,7 +2,7 @@
 import express from 'express';
 import * as dotenv from 'dotenv';
 import authRoute from './controllers/admin/authentication.controller'
-import {Client} from 'pg';
+import { Client } from 'pg';
 
 dotenv.config();
 const app = express();
@@ -26,8 +26,10 @@ adminConnection.query(`set search_path to ${process.env.ADMIN_DEFAULT_SCHEMA}`)
 
 adminConnection.query(`select * from companies`).then(data => {
     console.log(data.rows);
+    adminConnection.end();
 }).catch(err => {
     console.log(err);
+    adminConnection.end();
 });
 
 
@@ -40,18 +42,24 @@ const companyConnection = new Client({
 });
 
 companyConnection.connect()
-companyConnection.query(`set search_path to ${process.env.DEFAULT_SCHEMA}`).then(edt => {
-    console.log(edt);
-})
-.catch(error => {
-    console.log(error);
-});
+companyConnection.query(`set search_path to ${process.env.DEFAULT_SCHEMA}`)
+    .then(edt => {
+        console.log(edt);
+    })
+    .catch(error => {
+        console.log(error);
+    });
 
-companyConnection.query(`select * from empresas`).then(data => {
-    console.log(data.rows);
-}).catch(err => {
-    console.log(err.message);
-});
+
+companyConnection.query(`select * from empresas`)
+    .then(data => {
+        console.log(data.rows);
+        companyConnection.end();
+    }).catch(err => {
+        console.log(err.message);
+        companyConnection.end();
+    });
+
 
 
 
