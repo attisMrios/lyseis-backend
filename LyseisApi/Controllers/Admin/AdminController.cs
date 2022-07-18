@@ -37,7 +37,8 @@ namespace LyseisApi.Controllers.Admin
                 var errorList = companies.CreateAdminSchema();
                 var companyErrorList = companies.CreateCompanySchema();
                 result.ResultStatus = Status.Success;
-                result.Data = errorList.AddRange(companyErrorList);
+                errorList.AddRange(companyErrorList);
+                result.Data = errorList;
             }
             catch (Exception e)
             {
