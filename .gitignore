@@ -10,3 +10,4 @@ LyseisApi/.vscode
 Shared/bin
 Shared/obj
 Shared/.vscode
+backend/node_modules
