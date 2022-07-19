@@ -1,4 +1,5 @@
 import { Client } from "pg";
+import Utils from "./utils";
 
 export default class DataBase<T> {
 
@@ -7,24 +8,27 @@ export default class DataBase<T> {
 
     constructor(schema?: string) {
         this.schema = schema;
-        this.connect();
     }
 
     Query(sql: string): Promise<Array<T> | undefined> {
 
         return new Promise((resolve, reject) => {
             try {
-
+                this.connect();
                 this.dataBaseConnection?.query(sql)
                     .then(dbResult => {
                         resolve(dbResult.rows);
+                        this.CloseConnection();
                     })
                     .catch(error => {
                         reject(error);
+                        this.CloseConnection();
+                        Utils.WriteDatabaseLog(`Error executing the sql: ${sql} \n ${error.message}`);
                     });
 
-            } catch (error) {
-                console.log(error);
+            } catch (error: any) {
+                Utils.WriteDatabaseLog(`Error executing the sql: ${sql} \n ${error.message}`,);
+                this.CloseConnection();
                 reject(error);
             }
         })
@@ -40,11 +44,8 @@ export default class DataBase<T> {
         });
 
         this.dataBaseConnection.connect()
-            .then(data => {
-                console.log(data);
-            })
             .catch(error => {
-                console.log(error);
+                Utils.WriteDatabaseLog(error.message);
             });
         if (this.schema) {
             this.dataBaseConnection?.query(`set search_path to ${this.schema}`)
@@ -56,49 +57,5 @@ export default class DataBase<T> {
     CloseConnection() {
         this.dataBaseConnection?.end();
     }
-
-
-
-
-    // adminConnection.connect()
-    // adminConnection.query(`set search_path to ${process.env.ADMIN_DEFAULT_SCHEMA}`)
-
-
-    // adminConnection.query(`select * from companies`).then(data => {
-    //     console.log(data.rows);
-    //     adminConnection.end();
-    // }).catch(err => {
-    //     console.log(err);
-    //     adminConnection.end();
-    // });
-
-
-    // const companyConnection = new Client({
-    //     host: process.env.HOST,
-    //     user: process.env.USER,
-    //     port: parseInt(process.env.PORT || "5432"),
-    //     password: process.env.PASSWORD,
-    //     database: process.env.DATABASE
-    // });
-
-    // companyConnection.connect()
-    // companyConnection.query(`set search_path to ${process.env.DEFAULT_SCHEMA}`)
-    //     .then(edt => {
-    //         console.log(edt);
-    //     })
-    //     .catch(error => {
-    //         console.log(error);
-    //     });
-
-
-    // companyConnection.query(`select * from empresas`)
-    //     .then(data => {
-    //         console.log(data.rows);
-    //         companyConnection.end();
-    //     }).catch(err => {
-    //         console.log(err.message);
-    //         companyConnection.end();
-    //     });
-
 
 }

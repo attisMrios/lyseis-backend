@@ -6,6 +6,7 @@ import iniRoutes from './controllers/admin/initialize.controller';
 import Globals from './globals';
 
 dotenv.config();
+
 Globals.Initialize();
 const app = express();
 app.use(express.json()) // middleware que transforma el cuerpo de una petición en un json

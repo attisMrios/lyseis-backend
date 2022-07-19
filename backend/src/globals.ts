@@ -1,6 +1,8 @@
 export default class Globals{
-    static Initialize() {
+
+    public static Initialize() {
         Globals.applicationPath = __dirname;
     }
+
     public static applicationPath: string;
 }
