@@ -1,6 +1,16 @@
 import * as fs from 'fs';
 import Globals from './globals';
+import { lyseisClient } from './types';
 export default class Utils {
+    static DisconnectClient(client_id: number): void {
+        Globals.connected_clients = Globals.connected_clients.filter(client => client.client_id !== client_id);
+    }
+    static SendMessageToAllConnectedClients(message: string) {
+        Globals.connected_clients.forEach(client => {
+           client.response.write("data: " +message+"\n\n");
+            
+        })
+    }
 
     /**
      * Write, if not exist a file for all database logs
@@ -24,6 +34,31 @@ export default class Utils {
         } catch (error) {
             console.log(error);
         }
+    }
+
+    public static SaveConnectedClient(res: any): number {
+        const client_id = new Date().getTime();
+        try {
+            const headers = {
+                'Content-Type': 'text/event-stream',
+                'Connection': 'keep-alive',
+                'Cache-Control': 'no-cache',
+                'Access-Control-Allow-Origin': '*'
+            };
+            res.writeHead(200, headers);
+
+            const new_client_connected: lyseisClient = {
+                client_id: client_id,
+                process: "Generic",
+                response: res
+            };
+    
+            Globals.connected_clients.push(new_client_connected);
+        } catch (error: any) {
+            Utils.WriteDatabaseLog(`An error occurred while registering a client: ${error.mesage}`)
+        }
+
+        return client_id;
     }
 
 }

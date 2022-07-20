@@ -1,8 +1,8 @@
 CREATE TABLE products (
-	pr_id float8 NOT NULL,
-	pr_code varchar NOT NULL,
-	pr_description varchar NOT NULL,
-	pr_price float8 NOT NULL,
-	pr_picture varchar NOT NULL,
-    primary key(pr_id)
+	id float8 NOT NULL,
+	code varchar NOT NULL,
+	description varchar NOT NULL,
+	price float8 NOT NULL,
+	picture varchar NOT NULL,
+    primary key(id)
 );
