@@ -1,12 +1,12 @@
-import { lyseisClient } from "./types";
+import { Ly6ConnectedClient } from "./types";
 
 export default class Globals{
     public static applicationPath: string;
-    public static connected_clients: Array<lyseisClient>
+    public static connected_clients: Array<Ly6ConnectedClient>
 
     public static Initialize() {
         Globals.applicationPath = __dirname;
-        Globals.connected_clients = new Array<lyseisClient>();
+        Globals.connected_clients = new Array<Ly6ConnectedClient>();
     }
 
 }

@@ -1,25 +1,70 @@
 import express from "express";
 import GenericBusiness from "../../business/common/generic.business";
+import { Ly6GenericRequestBody } from "../../types";
 
 import Utils from "../../utils";
 const generic_crud_routes = express.Router();
 
 /**
- * Get list of table
+ * write data on the table
  */
-generic_crud_routes.get('/', async (req, res) => {
+generic_crud_routes.post('/create', async(req, res) => {
+    try {
+        const business = new GenericBusiness()
+        const request:Ly6GenericRequestBody = req.body;
+        await business.CreateData(request.table_name, request.data);
+        const table_data = await business.ReadData(request.table_name);
+        Utils.SendMessageToAllConnectedClients(JSON.stringify(table_data));
+        
+        res.status(200).send("Data saved!");
+    } catch (error: any) {
+        Utils.WriteLog(`An error occurred when creating generic data \n
+        data: ${JSON.stringify(req.body)} \n
+        Error: ${error.message}`);
+        res.status(500).send(`An error occurred when creating generic data \n
+        data: ${JSON.stringify(req.body)} \n
+        Error: ${error.message}`);
+    }
+})
+
+/**
+ * read data from the table
+ */
+generic_crud_routes.get('/read', async (req, res) => {
     try {
         const client_id = Utils.SaveConnectedClient(res);
 
-        const genericBusiness = new GenericBusiness();
-        const table_name: string = req.query.table_name?.toString() as string;
-        const data = await genericBusiness.get_data(table_name);
+        const business = new GenericBusiness();
+        const request:Ly6GenericRequestBody = req.body;
+        const data = await business.ReadData(request.table_name);
         req.on('close', () => {
             Utils.DisconnectClient(client_id)
         });
         Utils.SendMessageToAllConnectedClients(JSON.stringify(data));
     } catch (error: any) {
         Utils.WriteDatabaseLog(`An error has occurred in generic.controller: ${error.message}`);
+    }
+});
+
+/**
+ * update data on the table
+ */
+ generic_crud_routes.put('/update', async(req, res) => {
+    try {
+        const business = new GenericBusiness()
+        const request:Ly6GenericRequestBody = req.body;
+        await business.UpdateData(request.table_name, request.data, request.conditions);
+        const table_data = await business.ReadData(request.table_name);
+        Utils.SendMessageToAllConnectedClients(JSON.stringify(table_data));
+        
+        res.status(200).send("Data updated!");
+    } catch (error: any) {
+        Utils.WriteLog(`An error occurred when creating generic data \n
+        data: ${JSON.stringify(req.body)} \n
+        Error: ${error.message}`);
+        res.status(500).send(`An error occurred when creating generic data \n
+        data: ${JSON.stringify(req.body)} \n
+        Error: ${error.message}`);
     }
 })
 
