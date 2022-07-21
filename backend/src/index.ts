@@ -12,8 +12,6 @@ dotenv.config();
 Globals.Initialize();
 const app = express();
 app.use(express.json()) // middleware que transforma el cuerpo de una petición en un json
-// app.use(bodyParser.urlencoded({extended: false}));
-// app.use(cors);
 
 app.use('/api', authRoute);
 app.use('/api', iniRoutes);
@@ -25,5 +23,6 @@ app.get('/', (_req, res) => {
 
 app.listen(process.env.PORT, () => {
     console.log(`Server running on port ${process.env.PORT}`);
-
 })
+
+

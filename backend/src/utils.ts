@@ -1,14 +1,26 @@
 import * as fs from 'fs';
+import * as crypto from 'crypto';
+import * as jwt from 'jsonwebtoken'
 import Globals from './globals';
 import { Ly6ConnectedClient } from './types';
 export default class Utils {
+
+    /**
+     * Disconnect from Server Side Events
+     * @param client_id Connected client id
+     */
     static DisconnectClient(client_id: number): void {
         Globals.connected_clients = Globals.connected_clients.filter(client => client.client_id !== client_id);
     }
+
+    /**
+     * Sen server side events message to all clients connected
+     * @param message string with message
+     */
     static SendMessageToAllConnectedClients(message: string) {
         Globals.connected_clients.forEach(client => {
-           client.response.write("data: " +message+"\n\n");
-            
+            client.response.write("data: " + message + "\n\n");
+
         })
     }
 
@@ -21,13 +33,13 @@ export default class Utils {
         try {
 
             // if directory does not exist then is created
-            if(!fs.existsSync(`${Globals.applicationPath}/resources/database_logs`)){
-                fs.mkdirSync(`${Globals.applicationPath}/resources/database_logs`,{recursive: true});
+            if (!fs.existsSync(`${Globals.applicationPath}/resources/database_logs`)) {
+                fs.mkdirSync(`${Globals.applicationPath}/resources/database_logs`, { recursive: true });
             }
             const fileName = new Date();
             const filePath = `${Globals.applicationPath}/resources/database_logs/${fileName.toLocaleDateString().replace(/\//g, '-')}.log`;
             fs.appendFile(filePath, message, (err) => {
-                if(err){
+                if (err) {
                     console.log(err);
                 }
             });
@@ -36,6 +48,10 @@ export default class Utils {
         }
     }
 
+    /**
+     * Write error log message to file
+     * @param message log message
+     */
     public static WriteLog(message: string): void {
         try {
 
@@ -46,13 +62,13 @@ export default class Utils {
             messageHeader += '-----------------------------------------------------\n';
             messageHeader += '-----------------------------------------------------\n\n';
             // if directory does not exist then is created
-            if(!fs.existsSync(`${Globals.applicationPath}/resources/logs`)){
-                fs.mkdirSync(`${Globals.applicationPath}/resources/logs`,{recursive: true});
+            if (!fs.existsSync(`${Globals.applicationPath}/resources/logs`)) {
+                fs.mkdirSync(`${Globals.applicationPath}/resources/logs`, { recursive: true });
             }
             const fileName = new Date();
             const filePath = `${Globals.applicationPath}/resources/logs/${fileName.toLocaleDateString().replace(/\//g, '-')}.log`;
             fs.appendFile(filePath, messageHeader, (err) => {
-                if(err){
+                if (err) {
                     console.log(err);
                 }
             });
@@ -61,6 +77,11 @@ export default class Utils {
         }
     }
 
+    /**
+     * Save info from client connected to server side events
+     * @param res http response
+     * @returns number id client connected to server side events
+     */
     public static SaveConnectedClient(res: any): number {
         const client_id = new Date().getTime();
         try {
@@ -77,7 +98,7 @@ export default class Utils {
                 process: "Generic",
                 response: res
             };
-    
+
             Globals.connected_clients.push(new_client_connected);
         } catch (error: any) {
             Utils.WriteDatabaseLog(`An error occurred while registering a client: ${error.mesage}`)
@@ -86,4 +107,75 @@ export default class Utils {
         return client_id;
     }
 
+    /**
+     * Encrypt some text
+     * @param text text to encrypt
+     * @returns text encrypted
+     */
+    public static Encrypt(text: string): string {
+        let encrypted_text = "";
+        try {
+            const iv = crypto.randomBytes(16);
+            const key = crypto.createHash('sha256').update(process.env.LY6SECRET as string).digest('base64').substr(0, 32);
+            const cipher = crypto.createCipheriv('aes-256-cbc', key, iv);
+            let encrypted = cipher.update(text);
+            encrypted = Buffer.concat([encrypted, cipher.final()])
+            encrypted_text = iv.toString('hex') + ':' + encrypted.toString('hex');
+        } catch (error) {
+            console.log(error);
+        }
+        return encrypted_text;
+    }
+
+    /**
+     * Decrypt text
+     * @param text encrypted text
+     * @returns text decrypted
+     */
+    public static Decrypt(text: string): string {
+        let decrypted_text = "";
+        try {
+            let arg: void[] = [];
+            arg.shift();
+
+            let textParts: any = text.split(':');
+            const iv = Buffer.from(textParts.shift(), 'hex');
+            const encryptedData = Buffer.from(textParts.join(':'), 'hex');
+            const key = crypto.createHash('sha256').update(process.env.LY6SECRET as string).digest('base64').substr(0, 32);
+            const decipher = crypto.createDecipheriv('aes-256-cbc', key, iv);
+
+            const decrypted = decipher.update(encryptedData);
+            const decryptedText = Buffer.concat([decrypted, decipher.final()]);
+            return decryptedText.toString();
+        } catch (error) {
+            console.log(error)
+        }
+        return decrypted_text;
+    }
+
+    public static ValidateToken(req: any, res: any, next: any) {
+        try {
+            const auth_header = req.headers['authorization'];
+            let token: string = "";
+            if(auth_header){
+                token =  auth_header.split(' ')[1] as string; // valida que exista y toma la última posición del arreglo
+            } else {
+                return res.status(403).send("Not authorized");
+            }
+
+            if (token) {
+                jwt.verify(token, process.env.LY6SECRET as string, (err: any, _decoded: any) => {
+                    if(err){
+                        return res.status(403).send("Not authorized");
+                    } else {
+                        next();
+                    }
+                });
+            } else {
+                return res.status(403).send("Not authorized");
+            }
+        } catch (error) {
+
+        }
+    }
 }

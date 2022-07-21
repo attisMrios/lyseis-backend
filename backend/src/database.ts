@@ -1,7 +1,7 @@
 import { Client } from "pg";
 import Utils from "./utils";
 
-export default class DataBase<T> {
+export default class DataBase {
 
     private dataBaseConnection: Client | undefined;
     private schema: string | undefined;
@@ -10,7 +10,7 @@ export default class DataBase<T> {
         this.schema = schema;
     }
 
-    Query(sql: string): Promise<Array<T> | undefined> {
+    Query<T>(sql: string): Promise<Array<T> | undefined> {
 
         return new Promise((resolve, reject) => {
             try {

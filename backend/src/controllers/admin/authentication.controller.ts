@@ -3,9 +3,14 @@ import AuthenticationBusiness from '../../business/admin/authentication.business
 
 const authRouter = express.Router();
 
-authRouter.get('/token', (_req, res) => {
-    let busines = new AuthenticationBusiness()
-    res.send(busines.GetToken())
+authRouter.post('/token', async (req, res) => {
+    try {
+        let busines = new AuthenticationBusiness();
+        let token = await busines.GetToken(req.body.user, req.body.password);
+        res.status(200).send(token);
+    } catch (error) {
+        res.status(401).send(`Sorry you are not authorized`)
+    }
 });
 
 export default authRouter;

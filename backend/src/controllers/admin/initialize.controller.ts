@@ -1,7 +1,10 @@
 import express from "express";
-import InitializeDb from "../../business/admin/initialize.business";
+import InitializeBusiness from "../../business/admin/initialize.business";
 const iniRoutes = express.Router();
 
+/**
+ * Create the schemas
+ */
 iniRoutes.post('/initializedb', async (_req, res) => {
     try {
         let adminErrorList: Array<any>;
@@ -10,7 +13,7 @@ iniRoutes.post('/initializedb', async (_req, res) => {
         res.setHeader('Access-Control-Allow-Origin', '*')
 
         res.write('Updating config databases, please wait until this process finish\n');
-        const business = new InitializeDb();
+        const business = new InitializeBusiness();
         adminErrorList = await business.UpdateAdminDb();
 
         res.write('Updating company databases, please wait until this process finish \n');
@@ -24,6 +27,20 @@ iniRoutes.post('/initializedb', async (_req, res) => {
         res.end()
     } catch (err: any) {
         res.write(JSON.stringify(err));
+    }
+})
+
+/**
+ * Create initial info
+ */
+iniRoutes.get('/getstarted', async (_req, res) => {
+    try {
+        const busines = new InitializeBusiness();
+        await busines.InitializeDataBase();
+        res.status(200).send("now you can login on lyseis")
+    } catch (error) {
+        console.log(error);
+        
     }
 })
 

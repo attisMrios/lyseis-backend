@@ -1,4 +1,4 @@
-import { Validators } from "../decorators";
+import { Validators } from "../../decorators";
 
 export default class ProductsEntity {
 
