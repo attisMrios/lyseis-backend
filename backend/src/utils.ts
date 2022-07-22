@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import * as crypto from 'crypto';
 import * as jwt from 'jsonwebtoken'
 import Globals from './globals';
-import { Ly6ConnectedClient } from './types';
+import { Ly6ConnectedClient, Ly6Modules } from './types';
 export default class Utils {
 
     /**
@@ -11,15 +11,17 @@ export default class Utils {
      */
     static DisconnectClient(client_id: number): void {
         Globals.connected_clients = Globals.connected_clients.filter(client => client.client_id !== client_id);
-    }
+    }   
 
     /**
      * Sen server side events message to all clients connected
      * @param message string with message
      */
-    static SendMessageToAllConnectedClients(message: string) {
+    static SendMessageToAllConnectedClients(message: string, process: string) {
         Globals.connected_clients.forEach(client => {
-            client.response.write("data: " + message + "\n\n");
+            if(client.process == process) {
+                client.response.write("data: " + message + "\n\n");
+            }
 
         })
     }
@@ -82,7 +84,7 @@ export default class Utils {
      * @param res http response
      * @returns number id client connected to server side events
      */
-    public static SaveConnectedClient(res: any): number {
+    public static SaveConnectedClient(res: any, process: Ly6Modules): number {
         const client_id = new Date().getTime();
         try {
             const headers = {
@@ -95,7 +97,7 @@ export default class Utils {
 
             const new_client_connected: Ly6ConnectedClient = {
                 client_id: client_id,
-                process: "Generic",
+                process: process,
                 response: res
             };
 

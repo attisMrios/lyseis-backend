@@ -12,9 +12,9 @@ generic_crud_routes.post('/create', Utils.ValidateToken, async(req, res) => {
     try {
         const business = new GenericBusiness()
         const request:Ly6GenericRequestBody = req.body;
-        await business.CreateData(request.table_name, request.data);
-        const table_data = await business.ReadData(request.table_name);
-        Utils.SendMessageToAllConnectedClients(JSON.stringify(table_data));
+        await business.CreateData(request.process, request.data);
+        const table_data = await business.ReadData(request.process);
+        Utils.SendMessageToAllConnectedClients(JSON.stringify(table_data), request.process);
         
         res.status(200).send("Data saved!");
     } catch (error: any) {
@@ -23,7 +23,7 @@ generic_crud_routes.post('/create', Utils.ValidateToken, async(req, res) => {
         Error: ${error.message}`);
         res.status(500).send(`An error occurred when creating generic data \n
         data: ${JSON.stringify(req.body)} \n
-        Error: ${error.message}`);
+        Error: ${error}`);
     }
 })
 
@@ -32,15 +32,14 @@ generic_crud_routes.post('/create', Utils.ValidateToken, async(req, res) => {
  */
 generic_crud_routes.get('/read', async (req, res) => {
     try {
-        const client_id = Utils.SaveConnectedClient(res);
-
-        const business = new GenericBusiness();
         const request:any = req.query as unknown;
-        const data = await business.ReadData(request.table_name);
+        const client_id = Utils.SaveConnectedClient(res, request.process);
+        const business = new GenericBusiness();
+        const data = await business.ReadData(request.process);
         req.on('close', () => {
             Utils.DisconnectClient(client_id)
         });
-        Utils.SendMessageToAllConnectedClients(JSON.stringify(data));
+        Utils.SendMessageToAllConnectedClients(JSON.stringify(data), request.process);
     } catch (error: any) {
         Utils.WriteDatabaseLog(`An error has occurred in generic.controller: ${error}`);
         res.write(`An error has occurred in generic.controller: ${error}`)
@@ -56,9 +55,9 @@ generic_crud_routes.get('/read', async (req, res) => {
     try {
         const business = new GenericBusiness()
         const request:Ly6GenericRequestBody = req.body;
-        await business.UpdateData(request.table_name, request.data, request.id);
-        const table_data = await business.ReadData(request.table_name);
-        Utils.SendMessageToAllConnectedClients(JSON.stringify(table_data));
+        await business.UpdateData(request.process, request.data, request.id);
+        const table_data = await business.ReadData(request.process);
+        Utils.SendMessageToAllConnectedClients(JSON.stringify(table_data), request.process);
         
         res.status(200).send("Data updated!");
     } catch (error: any) {
@@ -79,9 +78,9 @@ generic_crud_routes.get('/read', async (req, res) => {
     try {
         const business = new GenericBusiness()
         const request:Ly6GenericRequestBody = req.body;
-        await business.DeleteData(request.table_name, request.id);
-        const table_data = await business.ReadData(request.table_name);
-        Utils.SendMessageToAllConnectedClients(JSON.stringify(table_data));
+        await business.DeleteData(request.process, request.id);
+        const table_data = await business.ReadData(request.process);
+        Utils.SendMessageToAllConnectedClients(JSON.stringify(table_data), request.process);
         
         res.status(200).send("The data has been deleted!");
     } catch (error: any) {
