@@ -30,7 +30,7 @@ generic_crud_routes.post('/create', Utils.ValidateToken, async(req, res) => {
 /**
  * read data from the table
  */
-generic_crud_routes.get('/read', Utils.ValidateToken, async (req, res) => {
+generic_crud_routes.get('/read', async (req, res) => {
     try {
         const client_id = Utils.SaveConnectedClient(res);
 

@@ -1,0 +1,1 @@
+https://github.com/dubbelster/express-sse-ts/blob/master/src/index.ts

@@ -1,5 +1,5 @@
 import express from 'express';
-// import cors from 'cors';
+import cors from 'cors';
 // import bodyParser from 'body-parser';
 import * as dotenv from 'dotenv';
 import authRoute from './controllers/admin/authentication.controller'
@@ -12,6 +12,7 @@ dotenv.config();
 Globals.Initialize();
 const app = express();
 app.use(express.json()) // middleware que transforma el cuerpo de una petición en un json
+app.use(cors())
 
 app.use('/api', authRoute);
 app.use('/api', iniRoutes);
