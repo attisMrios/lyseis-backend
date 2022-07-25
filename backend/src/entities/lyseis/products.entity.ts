@@ -13,12 +13,14 @@ export default class ProductsEntity {
     @Validators({AllowNull: false})
     price?: number;
 
+    tax?: number;
     picture?: string;
 
-    constructor(_id: number, _code: string, _description: string, _price: number, _picture: string) {
+    constructor(_id: number, _code: string, _description: string, _price: number, _picture: string, _tax: number) {
         this.id = _id;
         this.code = _code;
         this.description = _description;
         this.picture = _picture;
+        this.tax = _tax
     }
 }

@@ -3,6 +3,7 @@ CREATE TABLE products (
 	code varchar NOT NULL,
 	description varchar NOT NULL,
 	price float8 NOT NULL,
+	tax float8 NOT NULL,
 	picture varchar NOT NULL,
     primary key(id)
 );
