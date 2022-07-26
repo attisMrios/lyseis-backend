@@ -1,5 +1,6 @@
 
 import DataBase from "../../database";
+import { Ly6Response } from "../../types";
 import Utils from "../../utils";
 export default class GenericBusiness {
 
@@ -10,7 +11,7 @@ export default class GenericBusiness {
      * @param data data from body
      * @returns Promise
      */
-    CreateData(process: string, data: any) {
+    CreateData(process: string, data: any):Promise<Ly6Response> {
         return new Promise(async (resolve, reject) => {
             try {
                 const db = new DataBase('lyseis');
@@ -22,14 +23,22 @@ export default class GenericBusiness {
                         if (typeof (data[field]) == "string") {
                             values.push(`\'${data[field]}\'`)
                         } else {
-                            values.push(data[field]);
+                            if(field == 'id'){
+                                values.push(`(select max(id)+1 from ${process})`)
+                            } else {
+                                values.push(data[field]);
+                            }
                         }
                     }
                 }
 
                 let sql = `insert into ${process} (${fields.join()}) values(${values.join()})`;
                 const queryResponse = await db.Query(sql);
-                resolve(queryResponse);
+                let response: Ly6Response = {
+                    message: 'Data was saved',
+                    data: queryResponse
+                }
+                resolve(response);
 
 
             } catch (error: any) {
@@ -37,8 +46,13 @@ export default class GenericBusiness {
                 Error: ${error.message} \n
                 Method: GenericBusiness.CreateData\n
                 Params: process: ${process} - data: ${JSON.stringify(data)}`;
+                let response: Ly6Response = {
+                    message: error.message,
+                    data: errorDescription
+                }
+                
                 Utils.WriteLog(errorDescription);
-                reject(errorDescription);
+                reject(response);
             }
         });
     }

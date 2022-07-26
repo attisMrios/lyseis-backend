@@ -1,6 +1,6 @@
 import express from "express";
 import GenericBusiness from "../../business/common/generic.business";
-import { Ly6GenericRequestBody } from "../../types";
+import { Ly6GenericRequestBody, Ly6Response } from "../../types";
 
 import Utils from "../../utils";
 const generic_crud_routes = express.Router();
@@ -9,21 +9,28 @@ const generic_crud_routes = express.Router();
  * write data on the table
  */
 generic_crud_routes.post('/create', Utils.ValidateToken, async(req, res) => {
+    let response: Ly6Response;
     try {
         const business = new GenericBusiness()
         const request:Ly6GenericRequestBody = req.body;
         await business.CreateData(request.process, request.data);
         const table_data = await business.ReadData(request.process);
         Utils.SendMessageToAllConnectedClients(JSON.stringify(table_data), request.process);
-        
-        res.status(200).send("Data saved!");
+        response = {
+            message: 'Data was saved!'
+        }
+        res.status(200).send(response);
     } catch (error: any) {
+        response = {
+            message: error.message,
+            data: `An error occurred when creating generic data \n
+            data: ${JSON.stringify(req.body)} \n
+            Error: ${error}`
+        }
         Utils.WriteLog(`An error occurred when creating generic data \n
         data: ${JSON.stringify(req.body)} \n
         Error: ${error.message}`);
-        res.status(500).send(`An error occurred when creating generic data \n
-        data: ${JSON.stringify(req.body)} \n
-        Error: ${error}`);
+        res.status(500).send(response);
     }
 })
 

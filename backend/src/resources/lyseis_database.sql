@@ -4,6 +4,6 @@ CREATE TABLE products (
 	description varchar NOT NULL,
 	price float8 NOT NULL,
 	tax float8 NOT NULL,
-	picture varchar NOT NULL,
+	picture varchar NULL,
     primary key(id)
 );
