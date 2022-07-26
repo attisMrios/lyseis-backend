@@ -9,7 +9,7 @@ const generic_crud_routes = express.Router();
  * write data on the table
  */
 generic_crud_routes.post('/create', Utils.ValidateToken, async(req, res) => {
-    let response: Ly6Response;
+    let response: Ly6Response<any>;
     try {
         const business = new GenericBusiness()
         const request:Ly6GenericRequestBody = req.body;
@@ -84,7 +84,7 @@ generic_crud_routes.get('/read', async (req, res) => {
  generic_crud_routes.delete('/delete', Utils.ValidateToken, async(req, res) => {
     try {
         const business = new GenericBusiness()
-        const request:Ly6GenericRequestBody = req.body;
+        const request:Ly6GenericRequestBody = req.query as any;
         await business.DeleteData(request.process, request.id);
         const table_data = await business.ReadData(request.process);
         Utils.SendMessageToAllConnectedClients(JSON.stringify(table_data), request.process);
@@ -98,6 +98,23 @@ generic_crud_routes.get('/read', async (req, res) => {
         res.status(500).send(`An error occurred when deleting generic data \n
         data: ${JSON.stringify(req.body)} \n
         Error: ${error.message}`);
+    }
+})
+
+generic_crud_routes.post('/searchbyfield', Utils.ValidateToken,async (req, res) => {
+    try {
+        let response: Ly6Response<any> = {message: ''};
+        const business = new GenericBusiness();
+        const request: Ly6GenericRequestBody = req.body;
+        let data = await business.SearchByField(request.process, request.data)
+        response = data;
+        res.status(200).send(response);
+    } catch (error:any) {
+        let response:Ly6Response<any> = {
+            message: error.message
+        }
+
+        res.status(500).send(response)
     }
 })
 

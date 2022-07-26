@@ -4,14 +4,13 @@ import { Ly6Response } from "../../types";
 import Utils from "../../utils";
 export default class GenericBusiness {
 
-
     /**
      * Write data on table
      * @param process Table name
      * @param data data from body
      * @returns Promise
      */
-    CreateData(process: string, data: any):Promise<Ly6Response> {
+    CreateData(process: string, data: any):Promise<Ly6Response<any>> {
         return new Promise(async (resolve, reject) => {
             try {
                 const db = new DataBase('lyseis');
@@ -34,7 +33,7 @@ export default class GenericBusiness {
 
                 let sql = `insert into ${process} (${fields.join()}) values(${values.join()})`;
                 const queryResponse = await db.Query(sql);
-                let response: Ly6Response = {
+                let response: Ly6Response<any> = {
                     message: 'Data was saved',
                     data: queryResponse
                 }
@@ -46,7 +45,7 @@ export default class GenericBusiness {
                 Error: ${error.message} \n
                 Method: GenericBusiness.CreateData\n
                 Params: process: ${process} - data: ${JSON.stringify(data)}`;
-                let response: Ly6Response = {
+                let response: Ly6Response<any> = {
                     message: error.message,
                     data: errorDescription
                 }
@@ -132,6 +131,30 @@ export default class GenericBusiness {
                 Error: ${error.mesage}\n
                 Id: ${id}`;
                 reject(errorDescription);
+            }
+        })
+    }
+
+    /**
+     * Search by field
+     * @param process table name
+     * @param data field=value
+     * @returns array
+     */
+    SearchByField(process: string, data: number): Promise<Ly6Response<Array<any>>> {
+        return new Promise( async (resolve, reject) => {
+            try {
+                let response: Ly6Response<Array<any>> = {message: ''};
+                const db = new DataBase('lyseis');
+                let sql = `select * from ${process} where ${data}`;
+                response.data = await db.Query(sql);
+                resolve(response);
+            } catch (error: any) {
+                let response: Ly6Response<any> = {
+                    message: error.message,
+                    data: error
+                }
+                reject(response)
             }
         })
     }
