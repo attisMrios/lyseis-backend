@@ -18,12 +18,10 @@ export default class GenericBusiness {
                 let values: Array<any> = [];
                 for (const field in data) {
                     if (Object.prototype.hasOwnProperty.call(data, field)) {
-                        fields.push(field);
-                        if (typeof (data[field]) == "string") {
-                            values.push(`\'${data[field]}\'`)
-                        } else {
-                            if(field == 'id'){
-                                values.push(`(select max(id)+1 from ${process})`)
+                        if(field != 'id') {
+                            fields.push(field);
+                            if (typeof (data[field]) == "string") {
+                                values.push(`\'${data[field]}\'`)
                             } else {
                                 values.push(data[field]);
                             }

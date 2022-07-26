@@ -1,9 +1,8 @@
 CREATE TABLE products (
-	id float8 NOT NULL,
+	id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
 	code varchar NOT NULL,
 	description varchar NOT NULL,
 	price float8 NOT NULL,
 	tax float8 NOT NULL,
-	picture varchar NULL,
-    primary key(id)
+	picture varchar NULL
 );
