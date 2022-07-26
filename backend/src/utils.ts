@@ -162,19 +162,19 @@ export default class Utils {
             if(auth_header){
                 token =  auth_header.split(' ')[1] as string; // valida que exista y toma la última posición del arreglo
             } else {
-                return res.status(403).send("Not authorized");
+                return res.status(403).send({message: "Not authorized"});
             }
 
             if (token) {
                 jwt.verify(token, process.env.LY6SECRET as string, (err: any, _decoded: any) => {
                     if(err){
-                        return res.status(403).send("Not authorized");
+                        return res.status(403).send({message: "Not authorized"});
                     } else {
                         next();
                     }
                 });
             } else {
-                return res.status(403).send("Not authorized");
+                return res.status(403).send({message: "Not authorized"});
             }
         } catch (error) {
 
