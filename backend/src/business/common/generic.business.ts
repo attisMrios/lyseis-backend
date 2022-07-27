@@ -81,7 +81,7 @@ export default class GenericBusiness {
      * @param data data sent in the request body
      * @param conditions conditions object for update the data
      */
-    UpdateData(process: string, data: any, key: number): Promise<void> {
+    UpdateData(process: string, data: any): Promise<void> {
         return new Promise(async (resolve, reject) => {
             try {
                 const db = new DataBase("lyseis");
@@ -89,22 +89,23 @@ export default class GenericBusiness {
 
                 for (const key in data) {
                     if (Object.prototype.hasOwnProperty.call(data, key)) {
-                        if (typeof (data[key]) == 'string') {
-                            arrayFields.push(`${key} = '${data[key]}'`)
-                        } else {
-                            arrayFields.push(`${key} = ${data[key]}`)
+                        if(key != 'id'){
+                            if (typeof (data[key]) == 'string') {
+                                arrayFields.push(`${key} = '${data[key]}'`)
+                            } else {
+                                arrayFields.push(`${key} = ${data[key]}`)
+                            }
                         }
                     }
                 }
 
-                let sql = `update ${process} set ${arrayFields.join()} where id = ${key}`;
+                let sql = `update ${process} set ${arrayFields.join()} where id = ${data.id}`;
                 await db.Query(sql);
                 resolve();
             } catch (error: any) {
                 let errorDescription = `An error occurred when update the table: ${process}\n
                 Error: ${error.message} \n
-                Data: ${JSON.stringify(data)}
-                Reference: ${process}.id = ${key}`
+                Data: ${JSON.stringify(data)}`
                 Utils.WriteLog(errorDescription);
                 reject(errorDescription);
             }

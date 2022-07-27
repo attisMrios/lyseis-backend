@@ -62,7 +62,7 @@ generic_crud_routes.get('/read', async (req, res) => {
     try {
         const business = new GenericBusiness()
         const request:Ly6GenericRequestBody = req.body;
-        await business.UpdateData(request.process, request.data, request.id);
+        await business.UpdateData(request.process, request.data);
         const table_data = await business.ReadData(request.process);
         Utils.SendMessageToAllConnectedClients(JSON.stringify(table_data), request.process);
         
