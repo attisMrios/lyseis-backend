@@ -66,15 +66,15 @@ generic_crud_routes.get('/read', async (req, res) => {
         const table_data = await business.ReadData(request.process);
         Utils.SendMessageToAllConnectedClients(JSON.stringify(table_data), request.process);
         
-        res.status(200).send("Data updated!");
+        res.status(200).send({message: "Data was updated!"});
     } catch (error: any) {
         Utils.WriteLog(`An error occurred when creating generic data \n
         data: ${JSON.stringify(req.body)} \n
         Error: ${error.message}`);
 
-        res.status(500).send(`An error occurred when creating generic data \n
+        res.status(500).send({message: error.message, data:`An error occurred when creating generic data \n
         data: ${JSON.stringify(req.body)} \n
-        Error: ${error.message}`);
+        Error: ${error.message}`});
     }
 })
 
