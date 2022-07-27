@@ -1,13 +1,2 @@
-ApiTestProject/.vscode
-ApiTestProject/bin
-ApiTestProject/obj
-Lyseis1/bin
-Lyseis1/obj
-Lyseis1/.vscode
-LyseisApi/bin
-LyseisApi/obj
-LyseisApi/.vscode
-Shared/bin
-Shared/obj
-Shared/.vscode
-Lyseis/node_modules
+node_modules
+.vscode
