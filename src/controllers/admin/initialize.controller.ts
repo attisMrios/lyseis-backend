@@ -1,5 +1,6 @@
 import express from "express";
 import InitializeBusiness from "../../business/admin/initialize.business";
+import { Ly6Response } from "../../types";
 const iniRoutes = express.Router();
 
 /**
@@ -38,9 +39,10 @@ iniRoutes.get('/getstarted', async (_req, res) => {
         const busines = new InitializeBusiness();
         await busines.InitializeDataBase();
         res.status(200).send("now you can login on lyseis")
-    } catch (error) {
+    } catch (error: any) {
         console.log(error);
-        
+        let err: Ly6Response<any> = {message: error}
+        res.status(500).send(err);
     }
 })
 
