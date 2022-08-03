@@ -9,6 +9,7 @@ CREATE TABLE products (
 
 CREATE TABLE third_party (
 	id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+	identification float8 NOT NULL,
 	name varchar NOT NULL,
 	last_name varchar NOT NULL,
 	address varchar NULL,

@@ -88,16 +88,16 @@ generic_crud_routes.get('/read', async (req, res) => {
         await business.DeleteData(request.process, request.id);
         const table_data = await business.ReadData(request.process);
         Utils.SendMessageToAllConnectedClients(JSON.stringify(table_data), request.process);
-        
-        res.status(200).send("The data has been deleted!");
+        let response: Ly6Response<any> = {message: "The data has been deleted!"}
+        res.status(200).send(response);
     } catch (error: any) {
-        Utils.WriteLog(`An error occurred when deleting generic data \n
-        data: ${JSON.stringify(req.body)} \n
-        Error: ${error.message}`);
-
-        res.status(500).send(`An error occurred when deleting generic data \n
-        data: ${JSON.stringify(req.body)} \n
-        Error: ${error.message}`);
+        let response: Ly6Response<any> = {
+            message: `An error occurred when deleting generic data \n
+            data: ${JSON.stringify(req.body)} \n
+            Error: ${error.message}`
+        }
+        Utils.WriteLog(response.message);
+        res.status(500).send(response);
     }
 })
 
