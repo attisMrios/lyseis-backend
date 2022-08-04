@@ -17,7 +17,7 @@ generic_crud_routes.post('/create', Utils.ValidateToken, async(req, res) => {
         const table_data = await business.ReadData(request.process);
         Utils.SendMessageToAllConnectedClients(JSON.stringify(table_data), request.process);
         response = {
-            message: 'Data was saved!'
+            message: `${request.process.replace('_', ' ')} data was saved!`
         }
         res.status(200).send(response);
     } catch (error: any) {
@@ -66,7 +66,7 @@ generic_crud_routes.get('/read', async (req, res) => {
         const table_data = await business.ReadData(request.process);
         Utils.SendMessageToAllConnectedClients(JSON.stringify(table_data), request.process);
         
-        res.status(200).send({message: "Data was updated!"});
+        res.status(200).send({message: `${request.process.replace('_', ' ')} data was updated!`});
     } catch (error: any) {
         Utils.WriteLog(`An error occurred when creating generic data \n
         data: ${JSON.stringify(req.body)} \n
@@ -88,7 +88,7 @@ generic_crud_routes.get('/read', async (req, res) => {
         await business.DeleteData(request.process, request.id);
         const table_data = await business.ReadData(request.process);
         Utils.SendMessageToAllConnectedClients(JSON.stringify(table_data), request.process);
-        let response: Ly6Response<any> = {message: "The data has been deleted!"}
+        let response: Ly6Response<any> = {message: `The ${request.process.replace('_', ' ')} data has been deleted!`}
         res.status(200).send(response);
     } catch (error: any) {
         let response: Ly6Response<any> = {

@@ -32,7 +32,7 @@ export default class GenericBusiness {
                 let sql = `insert into ${process} (${fields.join()}) values(${values.join()})`;
                 const queryResponse = await db.Query(sql);
                 let response: Ly6Response<any> = {
-                    message: 'Data was saved',
+                    message: `${process} data was saved`,
                     data: queryResponse
                 }
                 resolve(response);
