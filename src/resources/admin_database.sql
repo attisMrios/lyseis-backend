@@ -44,3 +44,10 @@ INSERT INTO admin_lyseis.menu (id, parent_id,"order",title,url,icon)
 
 INSERT INTO admin_lyseis.menu (id, parent_id,"order",title,url,icon)
 	VALUES (4,3,3,'Products','/products','cube');
+
+INSERT INTO admin_lyseis.menu (id, parent_id, "order", title, url, icon)
+    VALUES(5, 0, 4, 'Common', '/common', 'apps');
+
+INSERT INTO admin_lyseis.menu (id,parent_id,"order",title,url,icon)
+	VALUES (6,5,1,'Third party','/third-party','id-card');
+

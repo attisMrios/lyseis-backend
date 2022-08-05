@@ -5,9 +5,9 @@ import { Ly6Response } from '../../types';
 import Utils from '../../utils';
 
 
-const adminRouter = express.Router();
+const admin_router = express.Router();
 
-adminRouter.get('/menu', Utils.ValidateToken, async (req, res) => {
+admin_router.get('/menu', Utils.ValidateToken, async (req, res) => {
     try {
         const business = new AdministratorBusiness();
         const request: any = req.query;
@@ -23,4 +23,4 @@ adminRouter.get('/menu', Utils.ValidateToken, async (req, res) => {
     }
 });
 
-export default adminRouter;
+export default admin_router;

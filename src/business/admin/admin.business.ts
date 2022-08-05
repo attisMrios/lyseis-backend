@@ -16,7 +16,7 @@ export default class AdministratorBusiness {
                 if(condition){
                     condition = ` where ${condition}`;
                 }
-                const menu: any = await db.Query<MenuEntity>(`select * from menu ${condition}`);
+                const menu: any = await db.Query<MenuEntity>(`select * from menu ${condition} order by "order"`);
                 resolve(menu);
             } catch (error: any) {
                 const error_description =error.message;
