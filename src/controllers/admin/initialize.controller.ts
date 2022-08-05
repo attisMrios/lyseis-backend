@@ -46,4 +46,16 @@ iniRoutes.get('/getstarted', async (_req, res) => {
     }
 })
 
+iniRoutes.get('/updatedb', async (_req, res) => {
+    try {
+        const busines = new InitializeBusiness();
+        await busines.UpdateDatabase();
+        res.status(200).send("Database was updated")
+    } catch (error: any) {
+        console.log(error);
+        let err: Ly6Response<any> = {message: error}
+        res.status(500).send(err);
+    }
+})
+
 export default iniRoutes;

@@ -2,6 +2,9 @@ import * as fs from 'fs';
 import DataBase from '../../database';
 import globals from '../../globals';
 export default class InitializeDb {
+    UpdateDatabase() {
+        throw new Error("Method not implemented.");
+    }
 
     /**
      * create company database schemas 

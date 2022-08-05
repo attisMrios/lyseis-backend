@@ -6,6 +6,7 @@ import authRoute from './controllers/admin/authentication.controller'
 import iniRoutes from './controllers/admin/initialize.controller';
 import Globals from './globals';
 import generic_crud_routes from './controllers/common/generic.controller';
+import adminRouter from './controllers/admin/admin.controller';
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ app.use(cors())
 
 app.use('/api', authRoute);
 app.use('/api', iniRoutes);
+app.use('/api/admin', adminRouter);
 app.use('/api/generic', generic_crud_routes);
 
 app.get('/', (_req, res) => {
