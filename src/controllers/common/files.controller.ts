@@ -3,8 +3,6 @@ import multer from 'multer'
 import * as fs from 'fs';
 import Utils from '../../utils';
 
-
-
 const upload = multer({dest: 'uploads'})
 
 const files_router = express.Router();
@@ -30,4 +28,5 @@ files_router.post('/productimage', upload.single('file'), (req, res) =>{
         res.status(500).send(response);
     }
 });
+
 export default files_router;
