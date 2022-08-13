@@ -8,6 +8,8 @@ https://github.com/dubbelster/express-sse-ts/blob/master/src/index.ts
 # API Node Js
 https://www.youtube.com/watch?v=ZpY5KdGQvwI
 https://appdividend.com/2022/03/03/node-express-image-upload-and-resize/
+- rutas
+https://www.youtube.com/watch?v=JrmgJSqmpfI
 
 
 # inicializar el programa

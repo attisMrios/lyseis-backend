@@ -15,6 +15,10 @@ Globals.Initialize();
 const app = express();
 app.use(express.json()) // middleware que transforma el cuerpo de una petición en un json
 app.use(cors())
+app.use('/uploads', express.static(Globals.applicationPath + '/uploads'));
+app.use(express.static('public'))
+console.log(Globals.applicationPath);
+
 
 app.use('/api', auth_route);
 app.use('/api', ini_routes);
@@ -24,17 +28,18 @@ app.use('/api/files', files_router)
 
 // CREATE SYSTEM PATHS
 
-if(!fs.existsSync('/uploads')){
-    fs.mkdirSync('/uploads');
+if(!fs.existsSync(Globals.applicationPath +'/uploads')){
+    fs.mkdirSync(Globals.applicationPath +'/uploads');
 }
 
-if(!fs.existsSync('/uploads/products')){
-    fs.mkdirSync('/uploads/products')
+if(!fs.existsSync(Globals.applicationPath +'/uploads/products')){
+    fs.mkdirSync(Globals.applicationPath +'/uploads/products')
 }
 
-if(!fs.existsSync('/uploads/third_party')){
-    fs.mkdirSync('/uploads/third_party');
+if(!fs.existsSync(Globals.applicationPath +'/uploads/third_party')){
+    fs.mkdirSync(Globals.applicationPath +'/uploads/third_party');
 }
+
 
 app.get('/', (_req, res) => {
     res.send('all is fine')

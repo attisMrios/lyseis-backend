@@ -1,5 +1,5 @@
 # front end check list
-- add page for list (read method) (revise menu)
+- add page for list (the read method) (check the menu)
 - add service
 - add model for entity
 - define datasource and selected list variables
@@ -15,11 +15,17 @@
 - add presentActionsheet method
 - go to capture page
 - add two inputs for model and action
-- define page_title, form group
+- define page_title and form group variables
 - add form builder, messages service, modelservice, modalcontroller to constructor
 - initialize form on constructor
 - on ngOnInit event method set the title page depending on the value of action variables and patch value to form group
 - add method for save depending on the action
+- on add method must add upload picture logic if you need, on both conditions, add and update because we don't need that image upload to the server if the data was not saved
+- add UploadFile method
+- add SelectPicture method
+- add verifycode method
+- add errorImage method
+- add cancel method to close modal
 - add the business logic
 
 # backend chek list
