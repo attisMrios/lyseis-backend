@@ -11,7 +11,13 @@ https://appdividend.com/2022/03/03/node-express-image-upload-and-resize/
 - rutas
 https://www.youtube.com/watch?v=JrmgJSqmpfI
 
+heroku***
 
-# inicializar el programa
+# program setup
+create two schemas admin_lyseis and lyseis
+
 - post => api/initializedb
 - get => api/getsarted
+
+user name: admin
+password: 123456Aa
